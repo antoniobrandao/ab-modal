@@ -51,7 +51,8 @@ module.exports = {
     {
     	console.log('createModal');
 
-    	$.extend( settings, options );
+		settings = extend(settings, options); // vanilla extend
+    	// $.extend( settings, options ); jquery extend
 
     	var w=window,
 		d=document,
@@ -311,3 +312,25 @@ var adjustViewPortModal = function()
 		modal_instance.style.top		= String((y / 2) - (modal_instance.offsetHeight / 2)) + 'px';
 	};
 }
+
+var extend = function ( defaults, options ) 
+{
+	var extended = {};
+	var prop;
+
+	for (prop in defaults) 
+	{
+		if (Object.prototype.hasOwnProperty.call(defaults, prop)) {
+			extended[prop] = defaults[prop];
+		}
+	}
+
+	for (prop in options) 
+	{
+		if (Object.prototype.hasOwnProperty.call(options, prop)) 
+		{
+			extended[prop] = options[prop];
+		}
+	}
+	return extended;
+};
