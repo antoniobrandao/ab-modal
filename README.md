@@ -1,6 +1,15 @@
 # ab-modal
 
-Minimal Vanilla JS Modal.
+Hyper-minimal Vanilla JS Modal. 
+
+Plug&Play, no Markup or CSS are required. It can be styled using the options object.
+
+All UI elements (title / text / OK button / CANCEL button) are optional and customizable.
+
+A simple fade-out is enabled by default when closing the model, can be disabled.
+
+Either of the OK or CANCEL buttons can be used to close the button. 
+
 
 ## Install
 
@@ -18,22 +27,23 @@ $ npm install ab-modal --save-dev
 
 	modal.createModal(
 	{
+		debug 					: false,
 		closeOnOKClick 			: false,
-		type 					: 'simple',
 		titleText				: 'Title',
 		textText				: 'Text',
 		confirmButtonText 		: 'OK',
 		cancelButtonText 		: 'Cancel',
 		showTitle 				: true,
 		showText 				: true,
-		fontFamily 				: 'sans serif',
+		fontFamily 				: null,
 		titleMarginBottom 		: '30px',
 		buttonsMarginTop 		: '30px',
-		addButtons 				: false,
+		modalBorderRadius 		: '2px',
+		buttonsBorderRadius 	: '2px',
 		showConfirmButton 		: true,
 		showCancelButton 		: true,
-		confirmButtonColor 		: '#27AE60',
-		cancelButtonColor 		: '#E74C3C',
+		confirmButtonColor 		: '#2ecc71',
+		cancelButtonColor 		: '#333',
 		confirmButtonTextColor	: 'white',
 		cancelButtonTextColor	: 'white',
 		defaultCancelIsClose	: true,
@@ -41,7 +51,30 @@ $ npm install ab-modal --save-dev
 		cancelCallback			: null,
 		confirmCallback			: null,
 		fadeOut					: true,
-		modalPadding			: '30px 70px 30px 70px',
+		modalPadding			: '26px 70px 20px 70px',
+	});
+
+
+
+	// Standard example: Modal with title, text, OK and CANCEL
+
+	modal.createModal(
+	{
+		titleText				: 'Question of the day',
+		textText				: 'Do you like coffee?',
+		confirmButtonText 		: 'Yes',
+		cancelButtonText 		: 'No',
+		confirmCallback			: function() { console.log('So we will bring coffee!')},
+		cancelCallback			: function() { console.log('So we will bring tea!')},
+	});
+
+
+	// Simplest example: Modal with title, OK
+
+	modal.createModal(
+	{
+		titleText				: 'Coffee is over',
+		confirmButtonText 		: 'OK',
 	});
 
 ## License

@@ -1,4 +1,4 @@
-// 'use strict';
+'use strict';
 
 var modal_base_element;
 var modal_background;
@@ -11,48 +11,41 @@ var button_cancel;
 var button_confirm_p;
 var button_cancel_p;
 
-var modal_width 		= 440;
-var modal_height 		= 200;
-var modal_width_px 		= String(modal_width) + 'px';
-var modal_height_px		= String(modal_height) + 'px';
-
 var settings = {
 
+	debug 					: false,
 	closeOnOKClick 			: false,
-	type 					: 'simple',
 	titleText				: 'Title',
 	textText				: 'Text',
 	confirmButtonText 		: 'OK',
 	cancelButtonText 		: 'Cancel',
 	showTitle 				: true,
 	showText 				: true,
-	fontFamily 				: 'sans serif',
+	fontFamily 				: null,
 	titleMarginBottom 		: '30px',
 	buttonsMarginTop 		: '30px',
-	addButtons 				: false,
+	modalBorderRadius 		: '2px',
+	buttonsBorderRadius 	: '2px',
 	showConfirmButton 		: true,
-	showCancelButton 		: true,
-	confirmButtonColor 		: '#27AE60',
-	cancelButtonColor 		: '#E74C3C',
+	showCancelButton 		: false,
+	confirmButtonColor 		: '#2ecc71',
+	cancelButtonColor 		: '#333',
 	confirmButtonTextColor	: 'white',
 	cancelButtonTextColor	: 'white',
-	defaultCancelIsClose	: true,
-	defaultOKIsClose		: false,
 	cancelCallback			: null,
 	confirmCallback			: null,
 	fadeOut					: true,
-	modalPadding			: '30px 70px 30px 70px',
+	modalPadding			: '26px 70px 20px 70px',
+	buttonsPadding			: '8px 20px 8px 20px',
 };
-
 
 module.exports = {
 
     createModal: function(options)
     {
-    	console.log('createModal');
+		settings = extend(settings, options); // extend options
 
-		settings = extend(settings, options); // vanilla extend
-    	// $.extend( settings, options ); jquery extend
+    	if (settings.debug) { console.log('ab-modal ::: createModal'); };
 
     	var w=window,
 		d=document,
@@ -63,12 +56,8 @@ module.exports = {
 
 		var window_width 		= x;
 		var window_height 		= y;
-
 		var window_width_px 	= String(window_width) + 'px';
 		var window_height_px	= String(window_height) + 'px';
-
-    	var title 				= 'title';
-    	var text 				= 'text';
 
         modal_base_element		= document.createElement('DIV');
         modal_background		= document.createElement('DIV');
@@ -76,83 +65,81 @@ module.exports = {
         text_element_title 		= document.createElement('H3');
         text_element_text 		= document.createElement('p');
 
-        modal_background.addClass('ui-modal-background');
-        modal_element.addClass('ui-modal-element');
+        modal_background.addClass('ab-modal-background');
+
+		modal_base_element.setAttribute('id', 'ab-modal');
+		modal_element.setAttribute('id', 'ab-modal-element');
+
+		if (settings.cancelCallback)  { settings.showCancelButton = true };
+		if (settings.confirmCallback) { settings.showConfirmButton = true };
 
         if (settings.showConfirmButton || settings.showCancelButton)
         {
-        	console.log('1');
-        	settings.addButtons 						= true;
         	buttons_container							= document.createElement('DIV');
         	buttons_container.style.marginTop 			= settings.buttonsMarginTop;
-        	buttons_container.setAttribute('id', 		'ui-modal-buttons');
+        	buttons_container.setAttribute('id', 		'ab-modal-buttons');
 
         	if (settings.showCancelButton)
         	{
-        		console.log('2');
 	        	button_cancel							= document.createElement('DIV');
-	        	button_cancel.addClass('ui-button');
+	        	button_cancel.addClass('ab-modal-button');
 	        	button_cancel.addClass('cancel');
 	        	button_cancel.style.backgroundColor 	= settings.cancelButtonColor;
+	        	button_cancel.style.display 			= 'inline-block';
 	        	button_cancel.style.color 				= settings.cancelButtonTextColor;
-	        	button_cancel.style.paddingTop 			= '10px';
-	        	button_cancel.style.paddingBottom 		= '10px';
-	        	button_cancel.style.paddingLeft 		= '20px';
-	        	button_cancel.style.paddingRight 		= '20px';
-	        	button_cancel.style.minWidth 			= '80px';
+	        	button_cancel.style.borderRadius		= settings.buttonsBorderRadius;
+	        	button_cancel.style.padding 			= settings.buttonsPadding;
+				button_cancel.style.webkitUserSelect 	= 'none';
+				button_cancel.style.mozUserSelect 		= 'none';
+				button_cancel.style.msUserSelect 		= 'none';
+				button_cancel.style.userSelect 			= 'none';
+				button_cancel.style.cursor 				= 'pointer';
 	        	if (settings.showConfirmButton ) 		{ button_cancel.style.marginRight = '40px'; };
 	        	button_cancel.textContent 				= settings.cancelButtonText;
-	        	// button_cancel.appendChild(button_cancel_p);
 	        	buttons_container.appendChild(button_cancel);
 
-	        	if (settings.defaultCancelIsClose) 
+	        	if (!settings.cancelCallback) 
 	        	{ 		 button_cancel.addEventListener('click', closeModal);
-	        	} else { button_cancel.addEventListener('click', settings.cancelCallback); }
+	        	} else { button_cancel.addEventListener('click', handleCancelCallback); }
         	};
 
         	if (settings.showConfirmButton)
         	{
-        		console.log('3');
 	        	button_confirm							= document.createElement('DIV');
-	        	button_confirm.addClass('ui-button');
+	        	button_confirm.addClass('ab-modal-button');
 	        	button_confirm.addClass('confirm');
 	        	button_confirm.style.backgroundColor	=  settings.confirmButtonColor;
 	        	button_confirm.style.color 				= settings.confirmButtonTextColor;
-	        	button_confirm.style.paddingTop 		= '10px';
-	        	button_confirm.style.paddingBottom 		= '10px';
-	        	button_confirm.style.paddingLeft 		= '20px';
-	        	button_confirm.style.paddingRight 		= '20px';
-	        	button_confirm.style.minWidth 			= '80px';
+	        	button_confirm.style.borderRadius		= settings.buttonsBorderRadius;
+	        	button_confirm.style.display 			= 'inline-block';
+	        	button_confirm.style.padding 			= settings.buttonsPadding;
+				button_confirm.style.webkitUserSelect 	= 'none';
+				button_confirm.style.mozUserSelect 		= 'none';
+				button_confirm.style.msUserSelect 		= 'none';
+				button_confirm.style.userSelect 		= 'none';
+				button_confirm.style.cursor 			= 'pointer';
 	        	button_confirm.textContent 				= settings.confirmButtonText;
-	        	// button_confirm.appendChild(button_confirm_p);
 	        	buttons_container.appendChild(button_confirm);
-	        	console.log('settings.defaultOKIsClose: ' + settings.defaultOKIsClose);
-	        	if (settings.defaultOKIsClose) 
-	        	{ 		 
-	        		button_confirm.addEventListener('click', closeModal);
-	        	} 
-	        	else
-	        	{ 
-	        		button_confirm.addEventListener('click', handleConfirmCallback);
-	        	}
-        	};
-        }
-        else
-        {
-        	settings.addButtons = false;
+	        	
+	        	if (!settings.confirmCallback) 
+	        	{ 			button_confirm.addEventListener('click', closeModal);
+	        	} else { 	button_confirm.addEventListener('click', handleConfirmCallback); }
+        	}
         }
         
         if (settings.showTitle) 
         {
         	text_element_title.textContent 			= settings.titleText;
         	text_element_title.style.marginBottom 	= settings.titleMarginBottom;
-        	text_element_title.style.fontFamily 	= settings.fontFamily;
+        	if (settings.fontFamily) { text_element_title.style.fontFamily = settings.fontFamily; };
+        	
         };
         
         if (settings.showText) 
         {
         	text_element_text.textContent 			= settings.textText;
-        	text_element_text.style.fontFamily 		= settings.fontFamily;
+        	text_element_text.style.maxWidth 		= '300px';
+        	if (settings.fontFamily) { text_element_text.style.fontFamily = settings.fontFamily; };
         };
 
 		modal_base_element.style.webkitTransition 	= 'all 0.5s';
@@ -163,12 +150,8 @@ module.exports = {
 		modal_base_element.style.position			= 'fixed';
 		modal_base_element.style.top				= '0';
 		modal_base_element.style.left				= '0';
-		modal_base_element.style.width				= window_width_px;
-		modal_base_element.style.height				= window_height_px;
 		modal_base_element.style.zIndex				= '1000';
 		modal_base_element.style.opacity			= '1';
-
-    	
 
 		modal_background.style.position				= 'fixed';
 		modal_background.style.top					= '0';
@@ -180,18 +163,12 @@ module.exports = {
 		modal_background.style.opacity 				= '0.3';
 
 		modal_element.style.position				= 'fixed';
-        // modal_element.style.width					= modal_width_px;
-        // modal_element.style.height					= modal_height_px;
         modal_element.style.backgroundColor 		= 'white';
 		modal_element.style.display					= 'block';
 		modal_element.style.textAlign				= 'center';
-        modal_element.style.borderRadius			= '3px';
+        modal_element.style.borderRadius			= settings.modalBorderRadius;
 		modal_element.style.boxSizing				= 'border-box';
-        // modal_element.style.padding 				= '20px';
 		modal_element.style.padding 				= settings.modalPadding;
-
-		modal_element.style.top						= String((window_height / 2) - (modal_height / 2)) + 'px';
-		modal_element.style.left					= String((window_width / 2) - (modal_width / 2)) + 'px';
 
 		modal_base_element.appendChild(modal_background);
 		modal_base_element.appendChild(modal_element);
@@ -204,14 +181,11 @@ module.exports = {
         	modal_element.appendChild(text_element_text);
         };
 
-		if (settings.addButtons) {
+		if (settings.showConfirmButton || settings.showCancelButton) {
 			modal_element.appendChild(buttons_container);
 		};
 
-		modal_base_element.setAttribute('id', 'ui-modal');
-		modal_element.setAttribute('id', 'ui-modal-element');
-
-		document.getElementById('root-wrapper').appendChild(modal_base_element);
+		document.body.appendChild(modal_base_element);
 
 		if (settings.closeOnBGClick) {
 			modal_background.addEventListener('click', closeModal);
@@ -228,7 +202,7 @@ var closeModal = function()
 	
 	if (settings.showCancelButton) 
 	{
-		if (settings.defaultCancelIsClose) 
+		if (settings.cancelCallback) 
 		{
 			button_cancel.removeEventListener('click', closeModal);
 		}
@@ -240,7 +214,7 @@ var closeModal = function()
 
 	if (settings.showConfirmButton) 
 	{
-		if (settings.defaultOKIsClose) 
+		if (settings.confirmCallback) 
 		{
 			button_confirm.removeEventListener('click', closeModal);
 		} 
@@ -251,7 +225,7 @@ var closeModal = function()
 	};
 
 	var removeElement = function() {
-		document.getElementById('root-wrapper').removeChild(document.getElementById('ui-modal'));
+		document.body.removeChild(document.getElementById('ab-modal'));
 	}
 
 	if (settings.fadeOut) 
@@ -288,10 +262,15 @@ var handleConfirmCallback = function()
 	closeModal();
 }
 
+var handleCancelCallback = function()
+{
+	settings.cancelCallback();
+	
+	closeModal();
+}
+
 var adjustViewPortModal = function()
 {
-	console.log('addViewportListeners');
-
     var w=window,
 		d=document,
 		e=d.documentElement,
@@ -299,12 +278,9 @@ var adjustViewPortModal = function()
 		x=w.innerWidth||e.clientWidth||g.clientWidth,
 		y=w.innerHeight||e.clientHeight||g.clientHeight;
 
-	var modal_instance 				= document.getElementById('ui-modal-element');
+	var modal_instance = document.getElementById('ab-modal-element');
 	
 	if (modal_instance) {
-		console.log('modal_instance.offsetWidth: ' + modal_instance.offsetWidth);
-		console.log('modal_instance.offsetHeight: ' + modal_instance.offsetHeight);
-
 		modal_background.style.width	= String(x) + 'px';
 		modal_background.style.height	= String(y) + 'px';
 
