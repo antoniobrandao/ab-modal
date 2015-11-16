@@ -8,6 +8,7 @@ Hyper-minimal Vanilla JS Modal.
 - All UI elements (title / text / OK button / CANCEL button) are optional and customizable.
 - A simple fade-out is enabled by default when closing the model, can be disabled.
 - Individual callbacks can be passed to the OK or CANCEL buttons.
+- And more options. See the default options below.
 
 ## Install
 
@@ -20,8 +21,29 @@ $ npm install ab-modal --save-dev
 ## Usage
 	
 	var modal = require('ab-modal');
+
+	// Standard example: Modal with title, text, OK and CANCEL
+
+	modal.createModal(
+	{
+		titleText				: 'Question of the day',
+		textText				: 'Do you like coffee?',
+		confirmButtonText 		: 'Yes',
+		cancelButtonText 		: 'No',
+		confirmCallback			: function() { console.log('So we will bring coffee!')},
+		cancelCallback			: function() { console.log('So we will bring tea!')},
+	});
+
+	// Simplest example: Modal with title, OK
+
+	modal.createModal(
+	{
+		titleText				: 'Coffee is over',
+		confirmButtonText 		: 'OK',
+		// no callBack was passed, the modal will simply close when clicking 'OK'
+	});
 	
-	// All the default values are shown here
+	// All the default values are shown below
 
 	modal.createModal(
 	{
@@ -50,26 +72,6 @@ $ npm install ab-modal --save-dev
 		confirmCallback			: null,
 		fadeOut					: true,
 		modalPadding			: '26px 70px 20px 70px',
-	});
-
-	// Standard example: Modal with title, text, OK and CANCEL
-
-	modal.createModal(
-	{
-		titleText				: 'Question of the day',
-		textText				: 'Do you like coffee?',
-		confirmButtonText 		: 'Yes',
-		cancelButtonText 		: 'No',
-		confirmCallback			: function() { console.log('So we will bring coffee!')},
-		cancelCallback			: function() { console.log('So we will bring tea!')},
-	});
-
-	// Simplest example: Modal with title, OK
-
-	modal.createModal(
-	{
-		titleText				: 'Coffee is over',
-		confirmButtonText 		: 'OK',
 	});
 
 ## License
