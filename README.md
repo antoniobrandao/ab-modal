@@ -2,14 +2,12 @@
 
 Hyper-minimal Vanilla JS Modal. 
 
-Plug&Play, no Markup or CSS are required. It can be styled using the options object.
-
-All UI elements (title / text / OK button / CANCEL button) are optional and customizable.
-
-A simple fade-out is enabled by default when closing the model, can be disabled.
-
-Either of the OK or CANCEL buttons can be used to close the button. 
-
+- Plug&Play, no Markup or CSS are required.
+- Can be styled using the options object.
+- DOM is only used while modal is active. The modal is removed from the DOM on close.
+- All UI elements (title / text / OK button / CANCEL button) are optional and customizable.
+- A simple fade-out is enabled by default when closing the model, can be disabled.
+- Individual callbacks can be passed to the OK or CANCEL buttons.
 
 ## Install
 
@@ -54,8 +52,6 @@ $ npm install ab-modal --save-dev
 		modalPadding			: '26px 70px 20px 70px',
 	});
 
-
-
 	// Standard example: Modal with title, text, OK and CANCEL
 
 	modal.createModal(
@@ -67,7 +63,6 @@ $ npm install ab-modal --save-dev
 		confirmCallback			: function() { console.log('So we will bring coffee!')},
 		cancelCallback			: function() { console.log('So we will bring tea!')},
 	});
-
 
 	// Simplest example: Modal with title, OK
 
