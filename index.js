@@ -21,9 +21,11 @@ var settings = {
 	cancelButtonText 		: 'Cancel',
 	showTitle 				: true,
 	showText 				: true,
-	fontFamily 				: null,
-	titleMarginBottom 		: '30px',
-	buttonsMarginTop 		: '30px',
+	titleColor 				: '#333',
+	textColor 				: '#888',
+	fontFamily 				: 'sans-serif',
+	titleMarginBottom 		: '10px',
+	buttonsMarginTop 		: '20px',
 	modalBorderRadius 		: '2px',
 	buttonsBorderRadius 	: '2px',
 	showConfirmButton 		: true,
@@ -35,7 +37,7 @@ var settings = {
 	cancelCallback			: null,
 	confirmCallback			: null,
 	fadeOut					: true,
-	modalPadding			: '26px 70px 20px 70px',
+	modalPadding			: '30px 70px 20px 70px',
 	buttonsPadding			: '8px 20px 8px 20px',
 };
 
@@ -93,6 +95,7 @@ module.exports = {
 				button_cancel.style.mozUserSelect 		= 'none';
 				button_cancel.style.msUserSelect 		= 'none';
 				button_cancel.style.userSelect 			= 'none';
+				button_cancel.style.fontFamily 			= settings.fontFamily
 				button_cancel.style.cursor 				= 'pointer';
 	        	if (settings.showConfirmButton ) 		{ button_cancel.style.marginRight = '40px'; };
 	        	button_cancel.textContent 				= settings.cancelButtonText;
@@ -117,6 +120,7 @@ module.exports = {
 				button_confirm.style.mozUserSelect 		= 'none';
 				button_confirm.style.msUserSelect 		= 'none';
 				button_confirm.style.userSelect 		= 'none';
+				button_confirm.style.fontFamily 		= settings.fontFamily
 				button_confirm.style.cursor 			= 'pointer';
 	        	button_confirm.textContent 				= settings.confirmButtonText;
 	        	buttons_container.appendChild(button_confirm);
@@ -131,6 +135,7 @@ module.exports = {
         {
         	text_element_title.textContent 			= settings.titleText;
         	text_element_title.style.marginBottom 	= settings.titleMarginBottom;
+        	text_element_title.style.marginTop 		= '0';
         	if (settings.fontFamily) { text_element_title.style.fontFamily = settings.fontFamily; };
         	
         };
@@ -174,10 +179,12 @@ module.exports = {
 		modal_base_element.appendChild(modal_element);
 		
         if (settings.showTitle) {
+        	text_element_title.style.color = settings.titleColor;
         	modal_element.appendChild(text_element_title);
         };
         
         if (settings.showText) {
+        	text_element_text.style.color = settings.textColor;
         	modal_element.appendChild(text_element_text);
         };
 
