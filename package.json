@@ -1,6 +1,6 @@
 {
   "name": "ab-modal",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Minimal Vanilla JS Modal",
   "main": "index.js",
   "keywords": [
@@ -12,6 +12,9 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/antoniobrandao/ab-modal"
+  },
+  "dependencies": {
+    "ab-element": "*",
   },
   "bugs": {
     "url": "https://github.com/antoniobrandao/ab-modal/issues"

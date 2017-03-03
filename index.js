@@ -37,6 +37,7 @@ var settings = {
 	cancelCallback			: null,
 	confirmCallback			: null,
 	fadeOut					: true,
+	windowShadow			: true,
 	modalPadding			: '30px 70px 20px 70px',
 	buttonsPadding			: '8px 20px 8px 20px',
 };
@@ -67,7 +68,7 @@ module.exports = {
         text_element_title 		= document.createElement('H3');
         text_element_text 		= document.createElement('p');
 
-        modal_background.addClass('ab-modal-background');
+        modal_background.className += ' ' + 'ab-modal-background';
 
 		modal_base_element.setAttribute('id', 'ab-modal');
 		modal_element.setAttribute('id', 'ab-modal-element');
@@ -84,8 +85,8 @@ module.exports = {
         	if (settings.showCancelButton)
         	{
 	        	button_cancel							= document.createElement('DIV');
-	        	button_cancel.addClass('ab-modal-button');
-	        	button_cancel.addClass('cancel');
+	        	button_cancel.className += ' ' + 'ab-modal-button';
+	        	button_cancel.className += ' ' + 'cancel';
 	        	button_cancel.style.backgroundColor 	= settings.cancelButtonColor;
 	        	button_cancel.style.display 			= 'inline-block';
 	        	button_cancel.style.color 				= settings.cancelButtonTextColor;
@@ -95,6 +96,7 @@ module.exports = {
 				button_cancel.style.mozUserSelect 		= 'none';
 				button_cancel.style.msUserSelect 		= 'none';
 				button_cancel.style.userSelect 			= 'none';
+				button_cancel.style.minWidth 			= '90px';
 				button_cancel.style.fontFamily 			= settings.fontFamily
 				button_cancel.style.cursor 				= 'pointer';
 	        	if (settings.showConfirmButton ) 		{ button_cancel.style.marginRight = '40px'; };
@@ -109,8 +111,8 @@ module.exports = {
         	if (settings.showConfirmButton)
         	{
 	        	button_confirm							= document.createElement('DIV');
-	        	button_confirm.addClass('ab-modal-button');
-	        	button_confirm.addClass('confirm');
+	        	button_confirm.className += ' ' + 'ab-modal-button';
+	        	button_confirm.className += ' ' + 'confirm';
 	        	button_confirm.style.backgroundColor	=  settings.confirmButtonColor;
 	        	button_confirm.style.color 				= settings.confirmButtonTextColor;
 	        	button_confirm.style.borderRadius		= settings.buttonsBorderRadius;
@@ -120,6 +122,7 @@ module.exports = {
 				button_confirm.style.mozUserSelect 		= 'none';
 				button_confirm.style.msUserSelect 		= 'none';
 				button_confirm.style.userSelect 		= 'none';
+				button_confirm.style.minWidth 			= '90px';
 				button_confirm.style.fontFamily 		= settings.fontFamily
 				button_confirm.style.cursor 			= 'pointer';
 	        	button_confirm.textContent 				= settings.confirmButtonText;
@@ -146,6 +149,12 @@ module.exports = {
         	text_element_text.style.maxWidth 		= '300px';
         	if (settings.fontFamily) { text_element_text.style.fontFamily = settings.fontFamily; };
         };
+
+		if (settings.windowShadow) {
+			modal_element.style.mozBoxShadow 		= '0px 2px 4px rgba(0, 0, 0, 0.4)';
+			modal_element.style.webkitBoxShadow 	= '0px 2px 4px rgba(0, 0, 0, 0.4)';
+			modal_element.style.boxShadow 			= '0px 2px 4px rgba(0, 0, 0, 0.4)';
+		}
 
 		modal_base_element.style.webkitTransition 	= 'all 0.5s';
 		modal_base_element.style.mozTransition 		= 'all 0.5s';
